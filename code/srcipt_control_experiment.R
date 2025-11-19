@@ -15,22 +15,22 @@
 #The script is structured as follows:
 #1. Load necessary packages and functions
 #2. load data and make dummy variable for 
-#left and right side of bimodal distribution
+  #left and right side of bimodal distribution
 #3. Quantify non valid trials (no hits and backswing)
 #4. Filter data by condition to analyse each condition separately
 #5. Delete outliers detected with cooks distance, an outlier is defined
-#as more than 3 times more influential than an average point
+  #as more than 3 times more influential than an average point
 #6. Perform multilevel regression analysis as the assumption of independence 
-#of residuals is violated. Therefor procedure according to Andy Field (2012)
-#for each condition separately. Start  to build up the models according
-#model complexity with an intercept only model, one predictor model, random
-#intercept model, random slope model, additional dummy predictor left_right
+  #of residuals is violated. Therefor procedure according to Andy Field (2012)
+  #for each condition separately. Start  to build up the models according
+  #model complexity with an intercept only model, one predictor model, random
+  #intercept model, random slope model, additional dummy predictor left_right
 #7. Check for collinearity, normality of residuals and homoscedasticity
 #8. Model comparison with anova (according to the parsimony principle)
 #9. Plot for all participants "estimation error" as a function of "ball_position"
 #10. Create bins and calculate mean and 95% CI across all subjects for each condition
 #11. Plot the mean and 95% confidence intervals for each bin across all subjects
-#for each condition together in one single plot
+  #for each condition together in one single plot
 
 # Packages ----
 #---------------------------------------------------------------
@@ -621,6 +621,17 @@ ggsave(filename = "plots/control_linear.png", plot = p, width = 17, height = 13)
 # Save as vector graphic
 ggsave(filename = "plots/control_linear.svg", plot = p, width = 17, height = 13)
 
+
+#Make a datafram e with the fixed effects of each model
+fixed_effects_control <- data.frame(
+  Condition = c("Fast", "Moderate", "Slow"),
+  Intercept = c(fixef(model5_fast)[1], fixef(model5_moderate)[1], fixef(model5_slow)[1]),
+  Slope_Ball_Position = c(fixef(model5_fast)[2], fixef(model5_moderate)[2], fixef(model5_slow)[2])
+)
+fixed_effects_control
+
+#Save the fixed effects table
+write.csv(fixed_effects_control, "data/fixed_effects_control.csv", row.names = FALSE)
 
 
 
